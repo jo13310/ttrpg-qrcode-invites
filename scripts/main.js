@@ -16,6 +16,16 @@ class TTRPGQRCodeInvites {
     Hooks.on('renderModuleManagement', (app, html, data) => {
       TTRPGQRCodeInvites.addModuleButton(app, html, data);
     });
+
+    // Add sidebar button for easy access
+    Hooks.on('renderSidebarTab', (app, html, data) => {
+      TTRPGQRCodeInvites.addSidebarButton(app, html, data);
+    });
+
+    // Add settings UI
+    Hooks.on('renderSettings', (app, html, data) => {
+      TTRPGQRCodeInvites.renderSettings(app, html, data);
+    });
   }
 
   static ready() {
@@ -23,11 +33,12 @@ class TTRPGQRCodeInvites {
   }
 
   static registerSettings() {
+    // Register WiFi SSID setting (hidden from default config, we'll create custom UI)
     game.settings.register(TTRPGQRCodeInvites.MODULE_ID, 'wifiSSID', {
       name: 'WiFi Network Name (SSID)',
       hint: 'The name of the WiFi network players should connect to',
       scope: 'world',
-      config: true,
+      config: false, // We'll create custom UI
       type: String,
       default: ''
     });
@@ -36,7 +47,7 @@ class TTRPGQRCodeInvites {
       name: 'WiFi Password',
       hint: 'The password for the WiFi network',
       scope: 'world',
-      config: true,
+      config: false, // We'll create custom UI
       type: String,
       default: ''
     });
@@ -45,7 +56,7 @@ class TTRPGQRCodeInvites {
       name: 'WiFi Security Type',
       hint: 'The security type of your WiFi network',
       scope: 'world',
-      config: true,
+      config: false, // We'll create custom UI
       type: String,
       choices: {
         'WPA': 'WPA/WPA2',
@@ -76,6 +87,139 @@ class TTRPGQRCodeInvites {
       event.preventDefault();
       TTRPGQRCodeInvites.showQRDialog();
     });
+  }
+
+  static addSidebarButton(app, html, data) {
+    // Only add button to the Scenes tab (or you could add to any tab)
+    if (data.tab !== 'scenes') return;
+
+    // Find the sidebar controls container
+    const controls = html.find('.sidebar-tabs .item.active').parent().find('.scene-controls');
+
+    if (controls.length === 0) {
+      // If scene-controls doesn't exist, try alternative approach
+      const sidebarControls = html.find('.sidebar-popout');
+      if (sidebarControls.length > 0) {
+        TTRPGQRCodeInvites.createSidebarQRButton(sidebarControls);
+      }
+      return;
+    }
+
+    // Create QR button
+    const qrButton = $(`
+      <li class="scene-control" data-tool="qr-codes" data-tooltip="Show QR Codes">
+        <div class="control-icon">
+          <i class="fas fa-qrcode"></i>
+        </div>
+      </li>
+    `);
+
+    controls.append(qrButton);
+
+    // Add click handler
+    qrButton.on('click', (event) => {
+      event.preventDefault();
+      TTRPGQRCodeInvites.showQRDialog();
+    });
+  }
+
+  static createSidebarQRButton(container) {
+    // Alternative sidebar button creation
+    const qrButton = $(`
+      <button class="qr-sidebar-button" title="Show QR Codes">
+        <i class="fas fa-qrcode"></i> QR Codes
+      </button>
+    `);
+
+    container.append(qrButton);
+
+    qrButton.on('click', (event) => {
+      event.preventDefault();
+      TTRPGQRCodeInvites.showQRDialog();
+    });
+  }
+
+  static renderSettings(app, html, data) {
+    // Find our module settings section
+    const moduleSettings = html.find(`.settings-list .setting[data-setting-id="${TTRPGQRCodeInvites.MODULE_ID}"]`);
+
+    if (moduleSettings.length === 0) return;
+
+    // Get current settings values
+    const wifiSSID = game.settings.get(TTRPGQRCodeInvites.MODULE_ID, 'wifiSSID');
+    const wifiPassword = game.settings.get(TTRPGQRCodeInvites.MODULE_ID, 'wifiPassword');
+    const wifiSecurity = game.settings.get(TTRPGQRCodeInvites.MODULE_ID, 'wifiSecurity');
+
+    // Create custom settings HTML
+    const customSettings = $(`
+      <div class="qr-invites-settings">
+        <h3><i class="fas fa-wifi"></i> WiFi QR Code Configuration</h3>
+        <p class="settings-hint">Configure your WiFi network settings to generate QR codes for easy player connection.</p>
+
+        <div class="form-group">
+          <label for="qr-wifi-ssid">WiFi Network Name (SSID)</label>
+          <input type="text" id="qr-wifi-ssid" name="wifiSSID" value="${wifiSSID}" placeholder="Enter your WiFi network name">
+          <p class="notes">The name of the WiFi network that players should connect to</p>
+        </div>
+
+        <div class="form-group">
+          <label for="qr-wifi-password">WiFi Password</label>
+          <input type="password" id="qr-wifi-password" name="wifiPassword" value="${wifiPassword}" placeholder="Enter your WiFi password">
+          <p class="notes">The password for your WiFi network. Leave blank for open networks.</p>
+        </div>
+
+        <div class="form-group">
+          <label for="qr-wifi-security">Security Type</label>
+          <select id="qr-wifi-security" name="wifiSecurity">
+            <option value="WPA" ${wifiSecurity === 'WPA' ? 'selected' : ''}>WPA/WPA2 (Recommended)</option>
+            <option value="WEP" ${wifiSecurity === 'WEP' ? 'selected' : ''}>WEP (Older)</option>
+            <option value="nopass" ${wifiSecurity === 'nopass' ? 'selected' : ''}>Open Network (No Password)</option>
+          </select>
+          <p class="notes">The security type of your WiFi network</p>
+        </div>
+
+        <div class="form-group">
+          <button type="button" id="qr-settings-save" class="qr-settings-save-btn">
+            <i class="fas fa-save"></i> Save WiFi Settings
+          </button>
+        </div>
+      </div>
+    `);
+
+    // Replace the default module setting with our custom settings
+    moduleSettings.find('.setting-content').empty().append(customSettings);
+
+    // Add save handler
+    html.find('#qr-settings-save').on('click', async (event) => {
+      event.preventDefault();
+      await TTRPGQRCodeInvites.saveSettings(html);
+    });
+
+    // Add change handlers to auto-save
+    html.find('#qr-wifi-ssid, #qr-wifi-password, #qr-wifi-security').on('change', async () => {
+      await TTRPGQRCodeInvites.saveSettings(html);
+    });
+  }
+
+  static async saveSettings(html) {
+    const ssid = html.find('#qr-wifi-ssid').val();
+    const password = html.find('#qr-wifi-password').val();
+    const security = html.find('#qr-wifi-security').val();
+
+    try {
+      // Save all settings
+      await game.settings.set(TTRPGQRCodeInvites.MODULE_ID, 'wifiSSID', ssid);
+      await game.settings.set(TTRPGQRCodeInvites.MODULE_ID, 'wifiPassword', password);
+      await game.settings.set(TTRPGQRCodeInvites.MODULE_ID, 'wifiSecurity', security);
+
+      // Show success notification
+      ui.notifications.info('WiFi QR Code settings saved successfully!');
+
+      console.log(`${TTRPGQRCodeInvites.MODULE_ID} | Settings saved:`, { ssid, security: security + '***' });
+    } catch (error) {
+      console.error(`${TTRPGQRCodeInvites.MODULE_ID} | Error saving settings:`, error);
+      ui.notifications.error('Failed to save WiFi settings. Please try again.');
+    }
   }
 
   static showQRDialog() {

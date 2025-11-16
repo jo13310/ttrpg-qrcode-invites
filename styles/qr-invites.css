@@ -266,6 +266,177 @@
   }
 }
 
+/* Settings Form Styles */
+.qr-invites-settings {
+  padding: 15px;
+  background: var(--foundry-secondary, #1a1a1a);
+  border-radius: 6px;
+  border: 1px solid var(--color-border-light, #444);
+  margin: 10px 0;
+}
+
+.qr-invites-settings h3 {
+  margin: 0 0 15px 0;
+  color: var(--primary, #ff6400);
+  font-size: 16px;
+  font-weight: 600;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+}
+
+.qr-invites-settings h3 i {
+  font-size: 18px;
+}
+
+.settings-hint {
+  margin: 0 0 20px 0;
+  color: var(--color-text-light-secondary, #ccc);
+  font-size: 13px;
+  line-height: 1.4;
+  font-style: italic;
+}
+
+.qr-invites-settings .form-group {
+  margin-bottom: 15px;
+}
+
+.qr-invites-settings label {
+  display: block;
+  margin-bottom: 5px;
+  color: var(--color-text-light-primary, #f0f0f0);
+  font-weight: 600;
+  font-size: 14px;
+}
+
+.qr-invites-settings input[type="text"],
+.qr-invites-settings input[type="password"],
+.qr-invites-settings select {
+  width: 100%;
+  padding: 8px 12px;
+  background: var(--foundry-primary, #2a2a2a);
+  border: 1px solid var(--color-border-light, #444);
+  border-radius: 4px;
+  color: var(--color-text-light-primary, #f0f0f0);
+  font-size: 14px;
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+.qr-invites-settings input[type="text"]:focus,
+.qr-invites-settings input[type="password"]:focus,
+.qr-invites-settings select:focus {
+  outline: none;
+  border-color: var(--primary, #ff6400);
+  box-shadow: 0 0 0 2px rgba(255, 100, 0, 0.2);
+}
+
+.qr-invites-settings .notes {
+  margin: 5px 0 0 0;
+  color: var(--color-text-light-tertiary, #999);
+  font-size: 12px;
+  line-height: 1.3;
+}
+
+.qr-settings-save-btn {
+  background: var(--primary, #ff6400);
+  border: 1px solid var(--primary-dark, #e55a00);
+  color: white;
+  padding: 10px 20px;
+  border-radius: 4px;
+  font-size: 14px;
+  font-weight: 600;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  margin-top: 10px;
+}
+
+.qr-settings-save-btn:hover {
+  background: var(--primary-dark, #e55a00);
+  border-color: var(--primary-darker, #cc5200);
+  transform: translateY(-1px);
+  box-shadow: 0 2px 6px rgba(0, 0, 0, 0.3);
+}
+
+.qr-settings-save-btn:active {
+  transform: translateY(0);
+  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.3);
+}
+
+.qr-settings-save-btn i {
+  font-size: 12px;
+}
+
+/* Sidebar Button Styles */
+.qr-sidebar-button {
+  background: var(--foundry-secondary, #1a1a1a);
+  border: 1px solid var(--color-border-light, #444);
+  color: var(--color-text-light-primary, #f0f0f0);
+  padding: 8px 12px;
+  border-radius: 4px;
+  font-size: 12px;
+  cursor: pointer;
+  transition: all 0.2s ease;
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  margin: 5px 0;
+  width: 100%;
+  justify-content: flex-start;
+}
+
+.qr-sidebar-button:hover {
+  background: var(--primary, #ff6400);
+  border-color: var(--primary-dark, #e55a00);
+  color: white;
+  transform: translateY(-1px);
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+}
+
+.qr-sidebar-button:active {
+  transform: translateY(0);
+  box-shadow: 0 1px 2px rgba(0, 0, 0, 0.2);
+}
+
+.qr-sidebar-button i {
+  font-size: 14px;
+}
+
+/* Scene Control Button Styles */
+.scene-control[data-tool="qr-codes"] {
+  cursor: pointer;
+  transition: all 0.2s ease;
+}
+
+.scene-control[data-tool="qr-codes"]:hover {
+  background: rgba(255, 100, 0, 0.2);
+  border-radius: 4px;
+}
+
+.scene-control[data-tool="qr-codes"] .control-icon {
+  color: var(--primary, #ff6400);
+}
+
+.scene-control[data-tool="qr-codes"]:hover .control-icon {
+  color: var(--primary-light, #ff8c33);
+}
+
+/* Settings integration in FoundryVTT settings */
+.settings-list .setting[data-setting-id="ttrpg-qrcode-invites"] .qr-invites-settings {
+  margin: 0;
+  border: none;
+  background: transparent;
+}
+
+.settings-list .setting[data-setting-id="ttrpg-qrcode-invites"] .qr-invites-settings .form-group {
+  background: var(--foundry-primary, #2a2a2a);
+  padding: 12px;
+  border-radius: 4px;
+  border: 1px solid var(--color-border-light, #444);
+}
+
 /* High contrast mode support */
 @media (prefers-contrast: high) {
   .qr-code-section {
@@ -274,6 +445,17 @@
   }
 
   .qr-invites-button {
+    border-width: 2px;
+  }
+
+  .qr-invites-settings input[type="text"],
+  .qr-invites-settings input[type="password"],
+  .qr-invites-settings select {
+    border-width: 2px;
+    border-color: var(--color-text-light-primary, #f0f0f0);
+  }
+
+  .qr-sidebar-button {
     border-width: 2px;
   }
 }
