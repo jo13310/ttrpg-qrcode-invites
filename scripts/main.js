@@ -105,16 +105,19 @@ class TTRPGQRCodeInvites {
   }
 
   static addSceneControlButton(controls) {
-    // Try to attach to the token controls; fall back to the first control set
-    const target = controls.find(c => c.name === 'token') || controls[0];
-    if (!target) return;
-
-    target.tools.push({
-      name: 'qr-codes',
-      title: 'Game Join QR Codes',
+    // Create a dedicated QR Invites control group in the scene controls bar
+    controls.push({
+      name: 'qrinvites',
+      title: 'QR Invites',
       icon: 'fas fa-qrcode',
-      button: true,
-      onClick: () => TTRPGQRCodeInvites.showQRDialog()
+      layer: 'controls',
+      tools: [{
+        name: 'qr-codes',
+        title: 'Game Join QR Codes',
+        icon: 'fas fa-qrcode',
+        button: true,
+        onClick: () => TTRPGQRCodeInvites.showQRDialog()
+      }]
     });
   }
 
