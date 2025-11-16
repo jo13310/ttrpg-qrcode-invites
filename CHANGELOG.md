@@ -7,6 +7,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [1.0.6] - 2025-11-16
+
+### Fixed
+- Replaced the previous QRCode library with a lightweight shim to eliminate the `Unexpected token '}'` error and restore QR generation using an external QR image service.
+
 ## [1.0.5] - 2025-11-16
 
 ### Changed

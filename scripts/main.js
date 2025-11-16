@@ -17,8 +17,8 @@ class TTRPGQRCodeInvites {
       TTRPGQRCodeInvites.addModuleButton(app, html, data);
     });
 
-    // Add settings UI
-    Hooks.on('renderSettings', (app, html, data) => {
+    // Enhance settings UI
+    Hooks.on('renderSettingsConfig', (app, html, data) => {
       TTRPGQRCodeInvites.renderSettings(app, html, data);
     });
   }
