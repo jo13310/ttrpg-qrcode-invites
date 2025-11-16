@@ -1,0 +1,30 @@
+{
+  "id": "ttrpg-qrcode-invites",
+  "title": "TTRPG - QR Code Invites",
+  "version": "1.0.0",
+  "compatibility": {
+    "minimum": "13",
+    "verified": "13"
+  },
+  "authors": [
+    {
+      "name": "GerKo",
+      "discord": ".gerko",
+      "flags": {}
+    }
+  ],
+  "flags": {
+    "canUpload": true
+  },
+  "description": "Generate QR codes for easy in-person game joining. Creates WiFi and game URL QR codes to help players quickly connect to your FoundryVTT session.",
+  "scripts": [
+    "scripts/qrcode.min.js",
+    "scripts/main.js"
+  ],
+  "styles": [
+    "styles/qr-invites.css"
+  ],
+  "url": "https://github.com/gerko/ttrpg-qrcode-invites",
+  "manifest": "https://raw.githubusercontent.com/gerko/ttrpg-qrcode-invites/main/module.json",
+  "download": "https://github.com/gerko/ttrpg-qrcode-invites/archive/main.zip"
+}
