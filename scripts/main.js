@@ -17,11 +17,6 @@ class TTRPGQRCodeInvites {
       TTRPGQRCodeInvites.addModuleButton(app, html, data);
     });
 
-    // Add sidebar button for easy access
-    Hooks.on('renderSidebarTab', (app, html, data) => {
-      TTRPGQRCodeInvites.addSidebarButton(app, html, data);
-    });
-
     // Add settings UI
     Hooks.on('renderSettings', (app, html, data) => {
       TTRPGQRCodeInvites.renderSettings(app, html, data);
@@ -101,47 +96,6 @@ class TTRPGQRCodeInvites {
     });
   }
 
-  static addSceneControlButton(controls) {
-    // Create a dedicated QR Invites control group in the scene controls bar
-    controls.push({
-      name: 'qrinvites',
-      title: 'QR Invites',
-      icon: 'fas fa-qrcode',
-      layer: 'controls',
-      tools: [{
-        name: 'qr-codes',
-        title: 'Game Join QR Codes',
-        icon: 'fas fa-qrcode',
-        button: true,
-        onClick: () => TTRPGQRCodeInvites.showQRDialog()
-      }]
-    });
-  }
-
-  static addSidebarButton(app, html, data) {
-    const $html = $(html);
-
-    // Only add button to the Settings tab (right-hand menu)
-    if (app.tabName !== 'settings') return;
-
-    // Avoid duplicates if re-rendered
-    if ($html.find('.qr-invites-settings-button').length > 0) return;
-
-    const qrButton = $(`
-      <button type="button" class="qr-invites-settings-button">
-        <i class="fas fa-qrcode"></i> QR Codes
-      </button>
-    `);
-
-    // Append near the bottom of the settings sidebar
-    $html.append(qrButton);
-
-    qrButton.on('click', (event) => {
-      event.preventDefault();
-      TTRPGQRCodeInvites.showQRDialog();
-    });
-  }
-
   static renderSettings(app, html, data) {
     const $html = $(html);
 
@@ -187,6 +141,10 @@ class TTRPGQRCodeInvites {
           <button type="button" id="qr-settings-save" class="qr-settings-save-btn">
             <i class="fas fa-save"></i> Save WiFi Settings
           </button>
+          <button type="button" id="qr-show-codes" class="qr-show-codes-btn">
+            <i class="fas fa-qrcode"></i> Show QR Codes
+          </button>
+          <p class="notes">After saving, click "Show QR Codes" to open a popup your players can scan.</p>
         </div>
       </div>
     `);
@@ -203,6 +161,12 @@ class TTRPGQRCodeInvites {
     // Add change handlers to auto-save
     $html.find('#qr-wifi-ssid, #qr-wifi-password, #qr-wifi-security').on('change', async () => {
       await TTRPGQRCodeInvites.saveSettings(html);
+    });
+
+    // Add handler to open the QR dialog directly from settings
+    $html.find('#qr-show-codes').on('click', (event) => {
+      event.preventDefault();
+      TTRPGQRCodeInvites.showQRDialog();
     });
   }
 

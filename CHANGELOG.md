@@ -7,15 +7,15 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [1.0.5] - 2025-11-16
+
+### Changed
+- Bumped manifest version to 1.0.5 to reflect the addition of the in-panel "Show QR Codes" button and recent compatibility fixes.
+
 ## [1.0.4] - 2025-11-16
 
-### Fixed
-- Corrected the Settings sidebar hook to use `app.tabName === 'settings'`, ensuring the QR Codes button actually renders in the right-hand menu.
-
-## [1.0.3] - 2025-11-16
-
 ### Added
-- QR Codes button in the Settings sidebar tab (right-hand menu) for quick access to the QR dialog.
+- "Show QR Codes" button directly in the TTRPG QR Code Invites module settings panel, opening the QR dialog from the same screen where you configure WiFi options.
 
 ## [1.0.2] - 2025-11-16
 
