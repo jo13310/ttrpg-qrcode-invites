@@ -7,6 +7,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [1.0.2] - 2025-11-16
+
+### Fixed
+- Resolved an error in the `renderModuleManagement` hook when Foundry passes a plain HTML element instead of a jQuery object, restoring the QR Codes button in the module list.
+
 ## [1.0.0] - 2024-11-16
 
 ### Added

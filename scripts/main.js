@@ -83,8 +83,10 @@ class TTRPGQRCodeInvites {
   }
 
   static addModuleButton(app, html, data) {
+    const $html = $(html);
+
     // Find our module in the list
-    const moduleElement = html.find(`.package[data-package-id="${TTRPGQRCodeInvites.MODULE_ID}"]`);
+    const moduleElement = $html.find(`.package[data-package-id="${TTRPGQRCodeInvites.MODULE_ID}"]`);
     if (moduleElement.length === 0) return;
 
     // Add QR Code button to module controls
@@ -122,15 +124,17 @@ class TTRPGQRCodeInvites {
   }
 
   static addSidebarButton(app, html, data) {
+    const $html = $(html);
+
     // Only add button to the Scenes tab (or you could add to any tab)
     if (data.tab !== 'scenes') return;
 
     // Find the sidebar controls container
-    const controls = html.find('.sidebar-tabs .item.active').parent().find('.scene-controls');
+    const controls = $html.find('.sidebar-tabs .item.active').parent().find('.scene-controls');
 
     if (controls.length === 0) {
       // If scene-controls doesn't exist, try alternative approach
-      const sidebarControls = html.find('.sidebar-popout');
+      const sidebarControls = $html.find('.sidebar-popout');
       if (sidebarControls.length > 0) {
         TTRPGQRCodeInvites.createSidebarQRButton(sidebarControls);
       }
@@ -172,8 +176,10 @@ class TTRPGQRCodeInvites {
   }
 
   static renderSettings(app, html, data) {
+    const $html = $(html);
+
     // Find our module settings section
-    const moduleSettings = html.find(`.settings-list .setting[data-setting-id="${TTRPGQRCodeInvites.MODULE_ID}"]`);
+    const moduleSettings = $html.find(`.settings-list .setting[data-setting-id="${TTRPGQRCodeInvites.MODULE_ID}"]`);
 
     if (moduleSettings.length === 0) return;
 
@@ -222,21 +228,23 @@ class TTRPGQRCodeInvites {
     moduleSettings.find('.setting-content').empty().append(customSettings);
 
     // Add save handler
-    html.find('#qr-settings-save').on('click', async (event) => {
+    $html.find('#qr-settings-save').on('click', async (event) => {
       event.preventDefault();
       await TTRPGQRCodeInvites.saveSettings(html);
     });
 
     // Add change handlers to auto-save
-    html.find('#qr-wifi-ssid, #qr-wifi-password, #qr-wifi-security').on('change', async () => {
+    $html.find('#qr-wifi-ssid, #qr-wifi-password, #qr-wifi-security').on('change', async () => {
       await TTRPGQRCodeInvites.saveSettings(html);
     });
   }
 
   static async saveSettings(html) {
-    const ssid = html.find('#qr-wifi-ssid').val();
-    const password = html.find('#qr-wifi-password').val();
-    const security = html.find('#qr-wifi-security').val();
+    const $html = $(html);
+
+    const ssid = $html.find('#qr-wifi-ssid').val();
+    const password = $html.find('#qr-wifi-password').val();
+    const security = $html.find('#qr-wifi-security').val();
 
     try {
       // Save all settings
@@ -337,18 +345,20 @@ class TTRPGQRCodeInvites {
   }
 
   static generateWiFiQR(html) {
+    const $html = $(html);
+
     const wifiSSID = game.settings.get(TTRPGQRCodeInvites.MODULE_ID, 'wifiSSID');
     const wifiPassword = game.settings.get(TTRPGQRCodeInvites.MODULE_ID, 'wifiPassword');
     const wifiSecurity = game.settings.get(TTRPGQRCodeInvites.MODULE_ID, 'wifiSecurity');
 
     if (!wifiSSID) {
-      const container = html.find('#wifi-qr-container');
+      const container = $html.find('#wifi-qr-container');
       container.html('<div class="qr-error">WiFi network not configured. Please set up WiFi credentials in module settings.</div>');
       return;
     }
 
     const wifiString = `WIFI:T:${wifiSecurity};S:${wifiSSID};P:${wifiPassword};;`;
-    const container = html.find('#wifi-qr-container')[0];
+    const container = $html.find('#wifi-qr-container')[0];
 
     if (container) {
       new QRCode(container, {
@@ -363,8 +373,10 @@ class TTRPGQRCodeInvites {
   }
 
   static generateGameQR(html) {
+    const $html = $(html);
+
     const serverURL = TTRPGQRCodeInvites.getServerURL();
-    const container = html.find('#game-qr-container')[0];
+    const container = $html.find('#game-qr-container')[0];
 
     if (container) {
       new QRCode(container, {
