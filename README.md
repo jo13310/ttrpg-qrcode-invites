@@ -33,8 +33,10 @@ A FoundryVTT module that generates QR codes for easy in-person game joining. Per
 1. Open FoundryVTT
 2. Go to **Game Settings** → **Add-on Modules**
 3. Click **Install Module**
-4. Enter this URL: `https://github.com/jo13310/ttrpg-qrcode-invites`
+4. Enter this URL: `https://raw.githubusercontent.com/jo13310/ttrpg-qrcode-invites/main/module.json`
 5. Click **Install** and restart FoundryVTT
+
+> **Note**: GitHub installations require the raw `manifest.json` URL, not the repository URL. FoundryVTT will automatically download all required files from the repository.
 
 ### Option 3: Manual Installation
 
