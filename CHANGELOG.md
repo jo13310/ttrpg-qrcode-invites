@@ -7,6 +7,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [1.0.9] - 2025-11-16
+
+### Changed
+- Simplified the settings integration: instead of replacing the entire module settings panel, the module now appends a dedicated `QR Codes` row (with a `Show QR Codes` button) beneath the WiFi settings, making the button reliably visible in the Module Settings UI.
+
 ## [1.0.8] - 2025-11-16
 
 ### Fixed

@@ -99,78 +99,37 @@ class TTRPGQRCodeInvites {
   static renderSettings(app, html, data) {
     const $html = $(html);
 
-    // Locate the settings list within the current tab
+    // Only run on the Module Settings tab
     const settingsList = $html.find('.settings-list');
     if (settingsList.length === 0) return;
 
-    // Anchor on one of our own settings rows (wifiSSID)
-    const anchor = settingsList.find(
+    // Look for one of our own settings (wifiSSID)
+    const wifiRow = settingsList.find(
       `.setting[data-setting-id="${TTRPGQRCodeInvites.MODULE_ID}.wifiSSID"]`
     );
-    if (anchor.length === 0) return;
+    if (wifiRow.length === 0) return;
 
-    // Get current settings values
-    const wifiSSID = game.settings.get(TTRPGQRCodeInvites.MODULE_ID, 'wifiSSID');
-    const wifiPassword = game.settings.get(TTRPGQRCodeInvites.MODULE_ID, 'wifiPassword');
-    const wifiSecurity = game.settings.get(TTRPGQRCodeInvites.MODULE_ID, 'wifiSecurity');
+    // Avoid adding the button multiple times
+    if (settingsList.find('.qr-invites-show-row').length > 0) return;
 
-    // Create custom settings HTML
-    const customSettings = $(`
-      <div class="qr-invites-settings">
-        <h3><i class="fas fa-wifi"></i> WiFi QR Code Configuration</h3>
-        <p class="settings-hint">Configure your WiFi network settings to generate QR codes for easy player connection.</p>
-
-        <div class="form-group">
-          <label for="qr-wifi-ssid">WiFi Network Name (SSID)</label>
-          <input type="text" id="qr-wifi-ssid" name="wifiSSID" value="${wifiSSID}" placeholder="Enter your WiFi network name">
-          <p class="notes">The name of the WiFi network that players should connect to</p>
-        </div>
-
-        <div class="form-group">
-          <label for="qr-wifi-password">WiFi Password</label>
-          <input type="password" id="qr-wifi-password" name="wifiPassword" value="${wifiPassword}" placeholder="Enter your WiFi password">
-          <p class="notes">The password for your WiFi network. Leave blank for open networks.</p>
-        </div>
-
-        <div class="form-group">
-          <label for="qr-wifi-security">Security Type</label>
-          <select id="qr-wifi-security" name="wifiSecurity">
-            <option value="WPA" ${wifiSecurity === 'WPA' ? 'selected' : ''}>WPA/WPA2 (Recommended)</option>
-            <option value="WEP" ${wifiSecurity === 'WEP' ? 'selected' : ''}>WEP (Older)</option>
-            <option value="nopass" ${wifiSecurity === 'nopass' ? 'selected' : ''}>Open Network (No Password)</option>
-          </select>
-          <p class="notes">The security type of your WiFi network</p>
-        </div>
-
-        <div class="form-group">
-          <button type="button" id="qr-settings-save" class="qr-settings-save-btn">
-            <i class="fas fa-save"></i> Save WiFi Settings
-          </button>
-          <button type="button" id="qr-show-codes" class="qr-show-codes-btn">
+    const qrRow = $(`
+      <div class="setting qr-invites-show-row">
+        <label>QR Codes</label>
+        <div class="form-fields">
+          <button type="button" class="qr-show-codes-btn">
             <i class="fas fa-qrcode"></i> Show QR Codes
           </button>
-          <p class="notes">After saving, click "Show QR Codes" to open a popup your players can scan.</p>
         </div>
+        <p class="notes">
+          Click "Show QR Codes" to open a popup with WiFi and Game URL QR codes for your players.
+          Make sure to save any WiFi changes first using the main "Save Changes" button below.
+        </p>
       </div>
     `);
 
-    // Remove the individual rows for our settings and append the unified block
-    settingsList.find(`.setting[data-setting-id^="${TTRPGQRCodeInvites.MODULE_ID}."]`).remove();
-    settingsList.append(customSettings);
+    wifiRow.after(qrRow);
 
-    // Add save handler
-    $html.find('#qr-settings-save').on('click', async (event) => {
-      event.preventDefault();
-      await TTRPGQRCodeInvites.saveSettings(html);
-    });
-
-    // Add change handlers to auto-save
-    $html.find('#qr-wifi-ssid, #qr-wifi-password, #qr-wifi-security').on('change', async () => {
-      await TTRPGQRCodeInvites.saveSettings(html);
-    });
-
-    // Add handler to open the QR dialog directly from settings
-    $html.find('#qr-show-codes').on('click', (event) => {
+    settingsList.find('.qr-show-codes-btn').on('click', (event) => {
       event.preventDefault();
       TTRPGQRCodeInvites.showQRDialog();
     });
