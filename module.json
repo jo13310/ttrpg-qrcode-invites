@@ -24,7 +24,7 @@
   "styles": [
     "styles/qr-invites.css"
   ],
-  "url": "https://github.com/gerko/ttrpg-qrcode-invites",
-  "manifest": "https://raw.githubusercontent.com/gerko/ttrpg-qrcode-invites/main/module.json",
-  "download": "https://github.com/gerko/ttrpg-qrcode-invites/archive/main.zip"
+  "url": "https://github.com/jo13310/ttrpg-qrcode-invites",
+  "manifest": "https://raw.githubusercontent.com/jo13310/ttrpg-qrcode-invites/main/module.json",
+  "download": "https://github.com/jo13310/ttrpg-qrcode-invites/archive/main.zip"
 }

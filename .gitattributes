@@ -1,1 +1,39 @@
+# FoundryVTT Module .gitattributes
+
+# FoundryVTT pack files are binary
 packs/** binary
+
+# Text files
+*.js text eol=lf
+*.json text eol=lf
+*.css text eol=lf
+*.html text eol=lf
+*.md text eol=lf
+*.yml text eol=lf
+*.yaml text eol=lf
+
+# Binary files
+*.png binary
+*.jpg binary
+*.jpeg binary
+*.gif binary
+*.webp binary
+*.ico binary
+*.woff binary
+*.woff2 binary
+*.ttf binary
+*.otf binary
+*.eot binary
+*.svg binary
+
+# Archive files
+*.zip binary
+*.tar binary
+*.gz binary
+*.7z binary
+*.rar binary
+
+# Documents
+*.pdf binary
+*.doc binary
+*.docx binary

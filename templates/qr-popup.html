@@ -1,0 +1,33 @@
+<div class="qr-invites-container">
+  <div class="qr-instructions">
+    <h3>Share these QR codes with your players</h3>
+    <p>Players can scan the WiFi QR code to connect to your network, then scan the Game URL QR code to join your FoundryVTT session.</p>
+  </div>
+
+  <div class="qr-codes-grid">
+    <!-- WiFi QR Code -->
+    <div class="qr-code-section">
+      <h4><i class="fas fa-wifi"></i> WiFi Connection</h4>
+      <div class="qr-code-container" id="wifi-qr-container"></div>
+      <div class="qr-details">
+        <p><strong>Network:</strong> <span id="wifi-network-name">Not configured</span></p>
+        <p><strong>Security:</strong> <span id="wifi-security-type">WPA</span></p>
+        <p class="qr-hint">Scan this QR code to automatically connect to the WiFi network</p>
+      </div>
+    </div>
+
+    <!-- Game URL QR Code -->
+    <div class="qr-code-section">
+      <h4><i class="fas fa-gamepad"></i> Game URL</h4>
+      <div class="qr-code-container" id="game-qr-container"></div>
+      <div class="qr-details">
+        <p><strong>URL:</strong> <code id="game-url-display">http://localhost:30000</code></p>
+        <p class="qr-hint">Scan this QR code after connecting to WiFi to join the game</p>
+      </div>
+    </div>
+  </div>
+
+  <div class="qr-footer">
+    <p><small><i class="fas fa-info-circle"></i> Make sure your FoundryVTT server is accessible on your local network. Players must be on the same WiFi network as the Game Master.</small></p>
+  </div>
+</div>
