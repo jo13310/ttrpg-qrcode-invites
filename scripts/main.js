@@ -12,11 +12,6 @@ class TTRPGQRCodeInvites {
     // Register module settings
     TTRPGQRCodeInvites.registerSettings();
 
-    // Add a button to the main scene controls (left toolbar)
-    Hooks.on('getSceneControlButtons', (controls) => {
-      TTRPGQRCodeInvites.addSceneControlButton(controls);
-    });
-
     // Add button to module settings
     Hooks.on('renderModuleManagement', (app, html, data) => {
       TTRPGQRCodeInvites.addModuleButton(app, html, data);
@@ -126,48 +121,20 @@ class TTRPGQRCodeInvites {
   static addSidebarButton(app, html, data) {
     const $html = $(html);
 
-    // Only add button to the Scenes tab (or you could add to any tab)
-    if (data.tab !== 'scenes') return;
+    // Only add button to the Settings tab (right-hand menu)
+    if (data.tab !== 'settings') return;
 
-    // Find the sidebar controls container
-    const controls = $html.find('.sidebar-tabs .item.active').parent().find('.scene-controls');
+    // Avoid duplicates if re-rendered
+    if ($html.find('.qr-invites-settings-button').length > 0) return;
 
-    if (controls.length === 0) {
-      // If scene-controls doesn't exist, try alternative approach
-      const sidebarControls = $html.find('.sidebar-popout');
-      if (sidebarControls.length > 0) {
-        TTRPGQRCodeInvites.createSidebarQRButton(sidebarControls);
-      }
-      return;
-    }
-
-    // Create QR button
     const qrButton = $(`
-      <li class="scene-control" data-tool="qr-codes" data-tooltip="Show QR Codes">
-        <div class="control-icon">
-          <i class="fas fa-qrcode"></i>
-        </div>
-      </li>
-    `);
-
-    controls.append(qrButton);
-
-    // Add click handler
-    qrButton.on('click', (event) => {
-      event.preventDefault();
-      TTRPGQRCodeInvites.showQRDialog();
-    });
-  }
-
-  static createSidebarQRButton(container) {
-    // Alternative sidebar button creation
-    const qrButton = $(`
-      <button class="qr-sidebar-button" title="Show QR Codes">
+      <button type="button" class="qr-invites-settings-button">
         <i class="fas fa-qrcode"></i> QR Codes
       </button>
     `);
 
-    container.append(qrButton);
+    // Append near the bottom of the settings sidebar
+    $html.append(qrButton);
 
     qrButton.on('click', (event) => {
       event.preventDefault();
