@@ -12,6 +12,11 @@ class TTRPGQRCodeInvites {
     // Register module settings
     TTRPGQRCodeInvites.registerSettings();
 
+    // Add a button to the main scene controls (left toolbar)
+    Hooks.on('getSceneControlButtons', (controls) => {
+      TTRPGQRCodeInvites.addSceneControlButton(controls);
+    });
+
     // Add button to module settings
     Hooks.on('renderModuleManagement', (app, html, data) => {
       TTRPGQRCodeInvites.addModuleButton(app, html, data);
@@ -96,6 +101,20 @@ class TTRPGQRCodeInvites {
     qrButton.on('click', (event) => {
       event.preventDefault();
       TTRPGQRCodeInvites.showQRDialog();
+    });
+  }
+
+  static addSceneControlButton(controls) {
+    // Try to attach to the token controls; fall back to the first control set
+    const target = controls.find(c => c.name === 'token') || controls[0];
+    if (!target) return;
+
+    target.tools.push({
+      name: 'qr-codes',
+      title: 'Game Join QR Codes',
+      icon: 'fas fa-qrcode',
+      button: true,
+      onClick: () => TTRPGQRCodeInvites.showQRDialog()
     });
   }
 
