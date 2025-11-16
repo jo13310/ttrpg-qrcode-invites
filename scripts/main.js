@@ -99,10 +99,15 @@ class TTRPGQRCodeInvites {
   static renderSettings(app, html, data) {
     const $html = $(html);
 
-    // Find our module settings section
-    const moduleSettings = $html.find(`.settings-list .setting[data-setting-id="${TTRPGQRCodeInvites.MODULE_ID}"]`);
+    // Locate the settings list within the current tab
+    const settingsList = $html.find('.settings-list');
+    if (settingsList.length === 0) return;
 
-    if (moduleSettings.length === 0) return;
+    // Anchor on one of our own settings rows (wifiSSID)
+    const anchor = settingsList.find(
+      `.setting[data-setting-id="${TTRPGQRCodeInvites.MODULE_ID}.wifiSSID"]`
+    );
+    if (anchor.length === 0) return;
 
     // Get current settings values
     const wifiSSID = game.settings.get(TTRPGQRCodeInvites.MODULE_ID, 'wifiSSID');
@@ -149,8 +154,9 @@ class TTRPGQRCodeInvites {
       </div>
     `);
 
-    // Replace the default module setting with our custom settings
-    moduleSettings.find('.setting-content').empty().append(customSettings);
+    // Remove the individual rows for our settings and append the unified block
+    settingsList.find(`.setting[data-setting-id^="${TTRPGQRCodeInvites.MODULE_ID}."]`).remove();
+    settingsList.append(customSettings);
 
     // Add save handler
     $html.find('#qr-settings-save').on('click', async (event) => {

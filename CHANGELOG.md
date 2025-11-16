@@ -7,6 +7,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [1.0.8] - 2025-11-16
+
+### Fixed
+- Corrected the settings hook to target the module's individual setting rows (`ttrpg-qrcode-invites.*`) and replace them with a unified panel, ensuring the WiFi fields and `Show QR Codes` button actually appear in the Module Settings UI.
+
 ## [1.0.7] - 2025-11-16
 
 ### Changed
