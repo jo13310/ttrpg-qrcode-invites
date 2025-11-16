@@ -7,6 +7,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [1.0.4] - 2025-11-16
+
+### Fixed
+- Corrected the Settings sidebar hook to use `app.tabName === 'settings'`, ensuring the QR Codes button actually renders in the right-hand menu.
+
 ## [1.0.3] - 2025-11-16
 
 ### Added

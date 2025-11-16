@@ -122,7 +122,7 @@ class TTRPGQRCodeInvites {
     const $html = $(html);
 
     // Only add button to the Settings tab (right-hand menu)
-    if (data.tab !== 'settings') return;
+    if (app.tabName !== 'settings') return;
 
     // Avoid duplicates if re-rendered
     if ($html.find('.qr-invites-settings-button').length > 0) return;
