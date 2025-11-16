@@ -38,7 +38,7 @@ class TTRPGQRCodeInvites {
       name: 'WiFi Network Name (SSID)',
       hint: 'The name of the WiFi network players should connect to',
       scope: 'world',
-      config: false, // We'll create custom UI
+      config: true,
       type: String,
       default: ''
     });
@@ -47,7 +47,7 @@ class TTRPGQRCodeInvites {
       name: 'WiFi Password',
       hint: 'The password for the WiFi network',
       scope: 'world',
-      config: false, // We'll create custom UI
+      config: true,
       type: String,
       default: ''
     });
@@ -56,7 +56,7 @@ class TTRPGQRCodeInvites {
       name: 'WiFi Security Type',
       hint: 'The security type of your WiFi network',
       scope: 'world',
-      config: false, // We'll create custom UI
+      config: true,
       type: String,
       choices: {
         'WPA': 'WPA/WPA2',
@@ -64,6 +64,16 @@ class TTRPGQRCodeInvites {
         'nopass': 'Open Network'
       },
       default: 'WPA'
+    });
+
+    // Optional override for the game server URL used in QR codes
+    game.settings.register(TTRPGQRCodeInvites.MODULE_ID, 'serverURL', {
+      name: 'Game Server URL',
+      hint: 'Full URL (including port) that players should use to join your FoundryVTT game. Leave blank to auto-detect from the browser URL.',
+      scope: 'world',
+      config: true,
+      type: String,
+      default: ''
     });
   }
 
@@ -347,19 +357,22 @@ class TTRPGQRCodeInvites {
   }
 
   static getServerURL() {
-    // Get the current server URL
-    const protocol = window.location.protocol;
-    const hostname = window.location.hostname;
+    // First, respect any custom server URL the GM configured
+    const customURL = (game.settings.get(TTRPGQRCodeInvites.MODULE_ID, 'serverURL') || '').trim();
+    if (customURL) return customURL;
+
+    // Fallback: use the current browser URL (same as the invite link in many setups)
+    const protocol = window.location.protocol || 'http:';
+    const hostname = window.location.hostname || 'localhost';
     const port = window.location.port;
 
-    // Use localhost:30000 as default for local testing
+    // Use localhost:30000 as default for local testing when no port is set
     if (hostname === 'localhost' && !port) {
       return 'http://localhost:30000';
     }
 
     // Construct the full URL
-    const url = port ? `${protocol}//${hostname}:${port}` : `${protocol}//${hostname}`;
-    return url;
+    return port ? `${protocol}//${hostname}:${port}` : `${protocol}//${hostname}`;
   }
 
   static getLocalIP() {
