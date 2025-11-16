@@ -7,6 +7,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [1.0.7] - 2025-11-16
+
+### Changed
+- Bumped manifest version to 1.0.7 after rewriting `qrcode.min.js` as a small inline QR image helper without syntax errors.
+
 ## [1.0.6] - 2025-11-16
 
 ### Fixed
